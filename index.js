@@ -16,12 +16,12 @@ function MyApp(){
                     <div class="row h-25">CAPNO</div>
                 </div>
             </div>
-            <div class="row h-10">Information Bar</div>
+            <div class="row h-10"><Footer/></div>
         </div>
     )
 }
 
-class Header extends React.Component{
+class Footer extends React.Component{
     constructor(props){
         super(props)
         this.state = {time:0}

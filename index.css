@@ -10,36 +10,11 @@
     background-color: black;
     border: 10px;
     border-color: aqua;
-    font-size: 2rem;
+    font-size: 1.2rem;
     display:flex;
     text-align: center;
-}
-.user{
-    width:10%;
-}
-.clock{
-    width: 10%;
 }
 .spacer{
     width:80%
 }
-.component{
-    background-color: cadetblue;
-    box-sizing: border-box;
-    border-width: 1px;
-    border-style: solid;
-    border-color: black;
-}
-.quarter-height{
-    height:25%;
-}
-.three-quarter-height{
-    height:75%;
-}
-.third-height{
-    height:33.33%;
-    background-color: cadetblue;
-    box-sizing: border-box;
-    border-width: 0px 0px 2px 0px;
-    border-style: solid;
-}
+
