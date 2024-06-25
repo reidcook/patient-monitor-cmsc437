@@ -88,3 +88,33 @@ class Temperature extends React.Component{
         )
     }
 }
+
+//
+// Jose this is the class that you made. Not sure what it is supposed to do but brought it over to this new file
+//
+class monitor extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+    render(){
+        return(<div>
+                <UseCanvas />
+            </div>
+        );
+    }
+}
+
+function UseCanvas(props) {
+    const [canvas, setCanvas] = React.useState(null);
+    React.useEffect(() => {
+        if(canvas != null){
+            const ctx = canvas.getContext("2d");
+            drawToCanvas(ctx);
+        }
+    } , [canvas]);
+    return(
+        <div className="canvas-container" col="9">
+            <canvas ref={setCanvas}/>
+        </div>
+    );
+}
