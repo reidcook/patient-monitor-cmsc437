@@ -3,10 +3,22 @@ const root = ReactDOM.createRoot(container);
 root.render(<MyApp />)
 function MyApp(){
     return(
-    <div className="screen">
-        <Header/>
-        <Temperature/>
-    </div>)
+        <div class="container-sm d-flex flex-column h-100 border border-info-subtle border-5">
+            <div class="row flex-grow-1 border-bottom border-light border-3">
+                <div class="col-sm-3 h-100 border-end border-light border-3">
+                    <div class="row h-25 border-bottom border-light border-3">Temperature</div>
+                    <div class="row flex-grow-1">SMD</div>
+                </div>
+                <div class="col-sm-9 h-100">
+                    <div class="row h-25 border-bottom border-light border-3">ECG 1</div>
+                    <div class="row h-25 border-bottom border-light border-3">ECG 2</div>
+                    <div class="row h-25 border-bottom border-light border-3">PLETH</div>
+                    <div class="row h-25">CAPNO</div>
+                </div>
+            </div>
+            <div class="row h-10">Information Bar</div>
+        </div>
+    )
 }
 
 class Header extends React.Component{
