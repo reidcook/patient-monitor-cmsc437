@@ -2,7 +2,7 @@ const container = document.getElementById("root");
 const root = ReactDOM.createRoot(container);
 root.render(<MyApp />)
 function MyApp(){
-    var [users, setUsers] = React.useState([{name: "Joe Shmo", age: "25", drugs: "Motrin", incident: "fell off bike"},{name: "Joess Shmo", age: "25", drugs: "Motrin", incident: "fell off bike"}]); // will hold all users
+    var [users, setUsers] = React.useState([{name: "Joe Shmo", age: "25", drugs: "Motrin", incident: "fell off bike"}]); // will hold all users
     var [user, setUser] = React.useState({name: "Joe Shmo", age: "25", drugs: "Motrin", incident: "fell off bike"}); // will hold current user
     var [screen, setScreen] = React.useState("Dashboard"); // will hold current screen
     console.log(user)
