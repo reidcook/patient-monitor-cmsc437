@@ -2,16 +2,29 @@ const container = document.getElementById("root");
 const root = ReactDOM.createRoot(container);
 root.render(<MyApp />)
 function MyApp(){
-    var [users, setUsers] = React.useState({name: "Joe Shmo", age: "25", drugs: "Motrin", incident: "fell off bike"}); // will hold all users
+    var [users, setUsers] = React.useState([{name: "Joe Shmo", age: "25", drugs: "Motrin", incident: "fell off bike"}]); // will hold all users
     var [user, setUser] = React.useState({name: "Joe Shmo", age: "25", drugs: "Motrin", incident: "fell off bike"}); // will hold current user
     var [screen, setScreen] = React.useState("Dashboard"); // will hold current screen
     const changeScreen = (newScreen) => {
         setScreen(newScreen)
     }
+    const changeUser = (newUser) => {
+        setUser(newUser)
+    }
+    const addUser = (newUser) => {
+        let newUsersList = [];
+        for(let i = 0; i< users.length; i++){
+            newUsersList.push(users[i])
+        }
+        newUsersList.push(newUser);
+        setUsers(newUsersList);
+    }
     if(screen === "Dashboard"){
+        console.log(users)
         return(
             <div style={{backgroundColor: "#212120"}} className="container-sm d-flex flex-column h-100 border border-info-subtle border-5">
-                <div className="row flex-grow-1 border-bottom border-light border-3">
+            <div className="row h-10"><Footer currentUser={user} setScreenProp={changeScreen} setUserProp={setUser}/></div>
+                <div className="row flex-grow-1 border-bottom border-top border-light border-3">
                     <div className="col-sm-3 h-100 border-end border-light border-3">
                         <div className="row h-25 border-bottom border-light border-3"><Temperature/></div>
                         <div className="row flex-grow-1">SMD</div>
@@ -23,21 +36,20 @@ function MyApp(){
                         <div className="row h-25">CAPNO</div>
                     </div>
                 </div>
-                <div className="row h-10"><Footer currentUser={user} setScreenProp={changeScreen} setUserProp={setUser}/></div>
             </div>
         )
     }
     else if(screen === "Details"){
         return(
             <div>
-                df
+                <Details setUsersProp={addUser} currentUser={user} setScreenProp={changeScreen}/>
             </div>
         )
     }
     else if(screen === "Select"){
         return(
             <div>
-                fdgjshn
+                <UserSelectScreen allUsers={users} setUsersProp={addUser} setUserProp={changeUser} currentUser={user} setScreenProp={changeScreen}/>
             </div>
         )
     }
@@ -50,7 +62,6 @@ class Footer extends React.Component{
         this.screenSetter = props.setScreenProp;
         this.userSelector = props.setUserProp;
         this.user = props.currentUser;
-        console.log(props)
     };
     componentDidMount(){
         var handle = setInterval(frame, 1);
@@ -76,6 +87,75 @@ class Footer extends React.Component{
     }
 }
 
+class Details extends React.Component {
+    constructor(props){
+        super(props)
+        this.screenSetter = props.setScreenProp;
+        this.user = props.currentUser;
+    }
+    componentDidMount(){}
+    render(){
+        return(
+            <div style={{backgroundColor: "#212120"}} className="container-sm d-flex flex-column h-100 border border-info-subtle border-5">
+                <div className="row h-10 border-bottom border-light border-3"><Footer currentUser={this.user} setScreenProp={this.screenSetter}/></div>
+            </div>
+        )
+    }
+}
+
+class UserSelectScreen extends React.Component {
+    constructor(props){
+        super(props)
+        this.screenSetter = props.setScreenProp;
+        this.user = props.currentUser;
+        this.allUsers = props.allUsers;
+        this.userSetter = props.setUserProp;
+        this.usersSetter = props.setUsersProp;
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.state = {}
+    }
+    componentDidMount(){}
+    handleSubmit(event){
+        //this.userSetter({name: event.target[0]?.value, age: event.target[1]?.value, drugs: event.target[2]?.value, incident: event.target[3]?.value})
+        this.usersSetter({name: event.target[0]?.value, age: event.target[1]?.value, drugs: event.target[2]?.value, incident: event.target[3]?.value})
+        event.preventDefault();
+    }
+    handleUserChange(event){
+        console.log(event)
+        this.userSetter(event.target.value)
+    }
+    render(){
+        return(
+            <div style={{backgroundColor: "#212120"}} className="container-sm d-flex flex-column h-100 border border-info-subtle border-5">
+                <div className="row h-10 border-bottom border-light border-3"><Footer currentUser={this.user} setScreenProp={this.screenSetter}/></div>
+                <h1>Create a User</h1>
+                <form onSubmit={this.handleSubmit}>
+                    <label>
+                        Name:
+                        <input type="text" name="name" />
+                    </label>
+                    <label>
+                        Age:
+                        <input type="text" name="age" />
+                    </label>
+                    <label>
+                        Prescribed Drugs:
+                        <input type="text" name="drugs" />
+                    </label>
+                    <label>
+                        Incident:
+                        <input type="text" name="incident" />
+                    </label>
+                    <input type="submit" value="submit" />
+                </form>
+                <h1>Change User</h1>
+                <select onChange={this.handleUserChange}>
+                    {this.allUsers.map((user) => <option value={user}>{user.name}</option>)}
+                </select>
+            </div>
+        )
+    }
+}
 
 class Temperature extends React.Component{
     constructor(props){
