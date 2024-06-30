@@ -98,6 +98,13 @@ class Details extends React.Component {
         return(
             <div style={{backgroundColor: "#212120"}} className="container-sm d-flex flex-column h-100 border border-info-subtle border-5">
                 <div className="row h-10 border-bottom border-light border-3"><Footer currentUser={this.user} setScreenProp={this.screenSetter}/></div>
+                <div className = "user-details">
+                    <h1>User Details</h1>
+                    <h3>Name: {this.user.name}</h3>
+                    <h3>Age: {this.user.age}</h3>
+                    <h3>Prescribed Drugs: {this.user.drugs}</h3>
+                    <h3>Incident: {this.user.incident}</h3>
+                </div>
             </div>
         )
     }
