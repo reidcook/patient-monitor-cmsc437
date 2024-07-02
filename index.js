@@ -105,6 +105,9 @@ class Details extends React.Component {
                     <h3>Prescribed Drugs: {this.user.drugs}</h3>
                     <h3>Incident: {this.user.incident}</h3>
                 </div>
+                <div style={{textAlign: "center", paddingTop: "20%"}}>
+                        <button className="home-button" onClick={() => this.screenSetter("Dashboard")}>Home</button>
+                    </div>
             </div>
         )
     }
