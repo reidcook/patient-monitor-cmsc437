@@ -36,6 +36,7 @@ label{
     height: 60px;
     border-radius: 0.5rem;
     background-color: rgb(68, 126, 233);
+    margin-bottom: 20%;
 }
 select{
     width: 30%
