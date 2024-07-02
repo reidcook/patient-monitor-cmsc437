@@ -42,7 +42,7 @@ function MyApp(){
     else if(screen === "Details"){
         return(
             <div>
-                <Details setUsersProp={addUser} currentUser={user} setScreenProp={changeScreen}/>
+                <Details setUsersProp={addUser} currentUser={user} setScreenProp={changeScreen} updateCurrentUser={setUser}/>
             </div>
         )
     }
@@ -62,12 +62,23 @@ class Footer extends React.Component{
         this.screenSetter = props.setScreenProp;
         this.userSelector = props.setUserProp;
         this.user = props.currentUser;
+        this.state = {
+            time: 0,
+            user: props.currentUser // Initialize state with user from props
+        }
     };
     componentDidMount(){
         var handle = setInterval(frame, 1);
         var elem = document.getElementById("time")
         function frame(){
             elem.textContent = new Date().toLocaleTimeString()
+        }
+    }
+    componentDidUpdate(prevProps) {
+        // Check if currentUser prop has changed
+        if (this.props.currentUser !== prevProps.currentUser) {
+            // Update state with new user
+            this.setState({ user: this.props.currentUser });
         }
     }
     componentWillUnmount(){
@@ -78,7 +89,7 @@ class Footer extends React.Component{
             <div className="header">
                 <div className="bottom" id="time"></div>
                 <div className="bottom">
-                    {this.user.name}
+                    {this.state.user.name}
                 </div>
                 <button onClick={() => this.screenSetter("Details")} className="bottom">Check User Details</button>
                 <button onClick={() => this.screenSetter("Select")} className="bottom">Change User</button>
@@ -92,22 +103,70 @@ class Details extends React.Component {
         super(props)
         this.screenSetter = props.setScreenProp;
         this.user = props.currentUser;
+        this.state = {
+            editLock: true,
+            user: this.user};
+        this.handleEditLock = this.handleEditLock.bind(this);
+        this.handleNameChange = this.handleNameChange.bind(this);
+        this.handleAgeChange = this.handleAgeChange.bind(this);
+        this.handleDrugsChange = this.handleDrugsChange.bind(this);
+        this.handleIncidentChange = this.handleIncidentChange.bind(this);
+    }
+
+    handleEditLock(){
+        this.setState(prevState => ({
+            editLock: !prevState.editLock
+        }), () => {
+            // If we are locking the fields after editing, update the currentUser in MyApp
+            if (this.state.editLock) {
+                this.props.updateCurrentUser(this.state.user);
+            }
+        });
+    }
+
+    handleNameChange(event) {
+        this.setState({
+            user: { ...this.state.user, name: event.target.value }
+        });
+    }
+    
+    handleAgeChange(event) {
+        this.setState({
+            user: { ...this.state.user, age: event.target.value }
+        });
+    }
+    
+    handleDrugsChange(event) {
+        this.setState({
+            user: { ...this.state.user, drugs: event.target.value }
+        });
+    }
+    
+    handleIncidentChange(event) {
+        this.setState({
+            user: { ...this.state.user, incident: event.target.value }
+        });
     }
     componentDidMount(){}
     render(){
         return(
-            <div style={{backgroundColor: "#212120"}} className="container-sm d-flex flex-column h-100 border border-info-subtle border-5">
-                <div className="row h-10 border-bottom border-light border-3"><Footer currentUser={this.user} setScreenProp={this.screenSetter}/></div>
-                <div className = "user-details">
-                    <h1>User Details</h1>
-                    <h3>Name: {this.user.name}</h3>
-                    <h3>Age: {this.user.age}</h3>
-                    <h3>Prescribed Drugs: {this.user.drugs}</h3>
-                    <h3>Incident: {this.user.incident}</h3>
-                </div>
-                <div style={{textAlign: "center", paddingTop: "20%"}}>
-                        <button className="home-button" onClick={() => this.screenSetter("Dashboard")}>Home</button>
+            <div style={{backgroundColor: "#212120"}} className="container-sm d-flex flex-column h-100 border border-info-subtle border-5 position-relative">
+                <div className="row h-10 border-bottom border-light border-3"><Footer currentUser={this.state.user} setScreenProp={this.screenSetter}/></div>
+                <div className="row align-items-start">
+                    <div className = " col-10 user-details">
+                        <h1>User Details</h1>
+                        <h3>Name: {this.state.editLock ? this.user.name : <input type="text" value={this.state.user.name} onChange={this.handleNameChange} />}</h3>
+                        <h3>Age: {this.state.editLock ? this.user.age : <input type="number" value={this.state.user.age} onChange={this.handleAgeChange} />}</h3>
+                        <h3>Prescribed Drugs: {this.state.editLock ? this.user.drugs : <input type="text" value={this.state.user.drugs} onChange={this.handleDrugsChange} />}</h3>
+                        <h3>Incident: {this.state.editLock ? this.user.incident : <input type="text" value={this.state.user.incident} onChange={this.handleIncidentChange} />}</h3>
                     </div>
+                    <div className ="col-2 text-end p-2" >
+                    <button onClick={this.handleEditLock} className="edit-button home-button"> {this.state.editLock ? 'Unlock' : 'Lock'}</button>
+                    </div>
+                </div>
+                <div style={{textAlign: "center", paddingTop: "10%"}}>
+                        <button className="home-button" onClick={() => this.screenSetter("Dashboard")}>Home</button>
+                </div>
             </div>
         )
     }
