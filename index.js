@@ -57,16 +57,9 @@ function MyApp(){
     }
     else if(screen === "Details"){
         return(
-<<<<<<< HEAD
-                <div>
-                    <Details setUsersProp={addUser} currentUser={user} setScreenProp={changeScreen}/>
-                </div>
-           
-=======
             <div>
                 <Details setUsersProp={addUser} currentUser={user} setScreenProp={changeScreen} updateCurrentUser={setUser}/>
             </div>
->>>>>>> d7552dc592a3bf5262b73958e794a8f2d97146ea
         )
     }
     else if(screen === "Select"){
@@ -179,10 +172,10 @@ class Details extends React.Component {
                 <div className="row align-items-start">
                     <div className = " col-10 user-details">
                         <h1>User Details</h1>
-                        <h3>Name: {this.state.editLock ? this.user.name : <input type="text" value={this.state.user.name} onChange={this.handleNameChange} />}</h3>
-                        <h3>Age: {this.state.editLock ? this.user.age : <input type="number" value={this.state.user.age} onChange={this.handleAgeChange} />}</h3>
-                        <h3>Prescribed Drugs: {this.state.editLock ? this.user.drugs : <input type="text" value={this.state.user.drugs} onChange={this.handleDrugsChange} />}</h3>
-                        <h3>Incident: {this.state.editLock ? this.user.incident : <input type="text" value={this.state.user.incident} onChange={this.handleIncidentChange} />}</h3>
+                        <h3>Name: {this.state.editLock ? this.state.user.name : <input type="text" value={this.state.user.name} onChange={this.handleNameChange} />}</h3>
+                        <h3>Age: {this.state.editLock ? this.state.user.age : <input type="number" value={this.state.user.age} onChange={this.handleAgeChange} />}</h3>
+                        <h3>Prescribed Drugs: {this.state.editLock ? this.state.user.drugs : <input type="text" value={this.state.user.drugs} onChange={this.handleDrugsChange} />}</h3>
+                        <h3>Incident: {this.state.editLock ? this.state.user.incident : <input type="text" value={this.state.user.incident} onChange={this.handleIncidentChange} />}</h3>
                     </div>
                     <div className ="col-2 text-end p-2" >
                     <button onClick={this.handleEditLock} className="edit-button home-button"> {this.state.editLock ? 'Unlock' : 'Lock'}</button>
