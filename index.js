@@ -38,7 +38,7 @@ function MyApp(){
                             <div className="row h-25 border-bottom border-light border-3"><Temperature power={power}/></div>
                             <div className="row h-30"><SMD power={power}/></div>
                             <br></br>
-                            <div className="row h-45 d-flex justify-content-center align-items-center">                              
+                            <div className="row h-25 d-flex justify-content-center align-items-center">                              
                                 <button onClick={handleButtonClick} style={{width: "150px", height: "150px"}} 
                                     className="btn btn-danger btn-lg rounded-circle 
                                     d-flex justify-content-center align-items-center btn-outline-light text-center">POWER</button>
@@ -167,21 +167,23 @@ class Details extends React.Component {
     componentDidMount(){}
     render(){
         return(
-            <div style={{backgroundColor: "#212120"}} className="container-sm d-flex flex-column h-100 border border-info-subtle border-5 position-relative">
+            <div style={{backgroundColor: "#212120"}} className="container-sm d-flex flex-column h-100 border border-info-subtle border-5 justify-content-center">
                 <div className="row h-10 border-bottom border-light border-3"><Footer currentUser={this.state.user} setScreenProp={this.screenSetter}/></div>
-                <div className="row align-items-start">
-                    <div className = " col-10 user-details">
+                <div className="row align-items-center p-5">
+                    <div className="col-2"></div>
+                    <div className = "col-8 user-details text-center">
                         <h1>User Details</h1>
                         <h3>Name: {this.state.editLock ? this.state.user.name : <input type="text" value={this.state.user.name} onChange={this.handleNameChange} />}</h3>
                         <h3>Age: {this.state.editLock ? this.state.user.age : <input type="number" value={this.state.user.age} onChange={this.handleAgeChange} />}</h3>
                         <h3>Prescribed Drugs: {this.state.editLock ? this.state.user.drugs : <input type="text" value={this.state.user.drugs} onChange={this.handleDrugsChange} />}</h3>
                         <h3>Incident: {this.state.editLock ? this.state.user.incident : <input type="text" value={this.state.user.incident} onChange={this.handleIncidentChange} />}</h3>
                     </div>
-                    <div className ="col-2 text-end p-2" >
-                    <button onClick={this.handleEditLock} className="edit-button home-button"> {this.state.editLock ? 'Unlock' : 'Lock'}</button>
-                    </div>
+                    <div className="col-2"></div>
                 </div>
-                <div style={{textAlign: "center", paddingTop: "10%"}}>
+                <div className ="text-center p-3">
+                    <button onClick={this.handleEditLock} className="edit-button home-button"> {this.state.editLock ? 'Unlock' : 'Lock'}</button>
+                </div>
+                <div className="change-user mt-auto" style={{textAlign: "center"}}>
                         <button className="home-button" onClick={() => this.screenSetter("Dashboard")}>Home</button>
                 </div>
             </div>
@@ -245,12 +247,12 @@ class UserSelectScreen extends React.Component {
                         </div>
                     </form>
                 </div>
-                <div className="change-user">
+                <div className="change-user d-flex flex-column h-100">
                     <h1>Change User</h1>
-                    <select value={this.user.name} onChange={this.handleUserChange}>
-                        {this.allUsers.map((user) => <option style={{padding: "100px"}}value={user.name}>{user.name}</option>)}
+                    <select value={this.user.name} onChange={this.handleUserChange} style={{padding: "10px", margin: "30px 0 0 0"}}>
+                        {this.allUsers.map((user) => <option value={user.name}>{user.name}</option>)}
                     </select>
-                    <div style={{textAlign: "center", paddingTop: "20%"}}>
+                    <div className="mt-auto" style={{textAlign: "center"}}>
                         <button className="home-button" onClick={() => this.screenSetter("Dashboard")}>Home</button>
                     </div>
                 </div>
