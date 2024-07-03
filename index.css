@@ -57,3 +57,8 @@ select{
     background-color: rgb(68, 126, 233);
     color: white;
 }
+
+.user-details{
+    font-size: 4rem;
+    padding-bottom: 1rem;
+}

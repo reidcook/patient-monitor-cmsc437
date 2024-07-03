@@ -169,10 +169,10 @@ class Details extends React.Component {
         return(
             <div style={{backgroundColor: "#212120"}} className="container-sm d-flex flex-column h-100 border border-info-subtle border-5 justify-content-center">
                 <div className="row h-10 border-bottom border-light border-3"><Footer currentUser={this.state.user} setScreenProp={this.screenSetter}/></div>
-                <div className="row align-items-center p-5">
+                <div className="row align-items-center p-5" style={{marginTop: "10%"}}>
                     <div className="col-2"></div>
-                    <div className = "col-8 user-details text-center">
-                        <h1>User Details</h1>
+                    <div className = "col-8 text-center">
+                        <h1 className="user-details">User Details</h1>
                         <h3>Name: {this.state.editLock ? this.state.user.name : <input type="text" value={this.state.user.name} onChange={this.handleNameChange} />}</h3>
                         <h3>Age: {this.state.editLock ? this.state.user.age : <input type="number" value={this.state.user.age} onChange={this.handleAgeChange} />}</h3>
                         <h3>Prescribed Drugs: {this.state.editLock ? this.state.user.drugs : <input type="text" value={this.state.user.drugs} onChange={this.handleDrugsChange} />}</h3>
