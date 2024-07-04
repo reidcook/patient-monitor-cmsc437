@@ -29,6 +29,18 @@ function MyApp(){
     const handleButtonClick = () => {
         setPower(!power);
     }
+    const changeStyles = () => {
+        let powerButton = ['btn'];
+
+        if(power){
+            powerButton.push('power-button btn-success btn-lg rounded-circle d-flex justify-content-center align-items-center btn-outline-light text-center');
+        }
+        else{
+            powerButton.push('power-button btn-danger btn-lg rounded-circle d-flex justify-content-center align-items-center btn-outline-secondary text-center');
+        }
+        return powerButton.join(' ');
+    };
+
     if(screen === "Dashboard"){
         return(
                 <div style={{backgroundColor: "#212120"}} className="container-sm flex-column border border-info-subtle border-5 rounded-3">
@@ -39,9 +51,8 @@ function MyApp(){
                             <div className="row h-30"><SMD power={power}/></div>
                             <br></br>
                             <div className="row h-25 d-flex justify-content-center align-items-center">                              
-                                <button onClick={handleButtonClick} style={{width: "150px", height: "150px"}} 
-                                    className="btn btn-danger btn-lg rounded-circle 
-                                    d-flex justify-content-center align-items-center btn-outline-light text-center">POWER</button>
+                                <button onClick={handleButtonClick} style={{width: "150px", height: "150px", borderWidth: "8px"}} 
+                                    className={changeStyles()}>POWER</button>
                             </div>
                         </div>
                         <div className="col-sm-9">
@@ -265,7 +276,10 @@ class Temperature extends React.Component{
     constructor(props){
         super(props);        
         this.state = {temp: this.props.power ? 95 :0, 
-                        bpm: this.props.power ? 90 : 0}; 
+                        bpm: this.props.power ? 90 : 0, 
+                        H: this.props.power ? 90 : 0,
+                        L: this.props.power ? 90 : 0,
+                        heart: this.props.power ? true: false}; 
         this.tempInterval = null;
         this.bpmInterval = null;
     }
@@ -287,13 +301,17 @@ class Temperature extends React.Component{
     }
     startMonitor = () => {
         this.tempInterval = setInterval(this.temp, 3000);
-        this.bpmInterval = setInterval(this.bpm, 2000)
+        this.bpmInterval = setInterval(this.bpm, 2000);
+        this.H();
+        this.L();
+        this.updateHeart();
     }
     stopMonitor = () => {
         clearInterval(this.tempInterval);
         clearInterval(this.bpmInterval);
         this.setState({temp: 0});
         this.setState({bpm: 0});
+        this.setState({H: 0, L:0, heart: false});
     }
     temp = () => {
         if(this.props.power){
@@ -307,14 +325,42 @@ class Temperature extends React.Component{
             this.setState({bpm});
         }
     }
+    H = () => {
+        if(this.props.power){
+            this.setState({H: 100});
+        }
+        else{
+            this.setState({H: 0});
+        }
+    }
+    L = ()  => {
+        if(this.props.power){
+            this.setState({L: 95});
+        }
+        else{
+            this.setState({L: 0});
+        }
+    }
+    updateHeart = () => {
+        if(this.props.power) {
+            this.setState({heart: true});
+        }
+        else{
+            this.setState({heart: false});
+        }
+    }
     render(){
         return(
             <div>
-                <h4>Temperature</h4>
-                <h5>{this.state.temp} &#176;F</h5>
+                <div className="col-sm-12">Temperature</div>
+                <span className="row-sm d-flex align-items-center">
+                    <div className="col-sm-7">{this.state.temp} &#176;F</div>
+                    <div className="col-sm-5 border border-secondary border-1"><span>High: {this.state.H} &#176;F</span><br></br><span>Low: {this.state.L} &#176;F</span></div>
+                </span>
                 <hr></hr>
                 <h4>HeartRate</h4>
                 <h5>{this.state.bpm} BPM</h5>
+                <div className="d-flex justify-content-center align-items-center fs-1">{this.state.heart ? <i className="fa-solid fa-heart fa-2x heart"></i>: null}</div>
             </div>
           
         )
@@ -328,7 +374,12 @@ class ECG1 extends React.Component {
     }
     render(){
         return(<div className="flex-sm-row d-flex">
-                <div className="text-success fw-bold fs-4 d-flex flex-sm-column col-sm-2 text-center">ECG1</div>
+                <div className="fw-bold fs-4 d-flex flex-sm-column col-sm-2 text-center align-items-center">
+                    <div className="row h-25 fs-3 text-success">ECG1</div>
+                    {this.props.power ? <div className="row h-25 fs-5 text-success">ST1-II &nbsp; &nbsp; &nbsp; 1.6mm</div>: null} 
+                    {this.props.power ? <div className="row h-25 fs-5 text-success">ST2-I &nbsp; &nbsp; &nbsp; 1.7mm</div>: null} 
+                    {this.props.power ? <div className="row h-25 fs-5 text-success">QT &nbsp; &nbsp; &nbsp; 375ms</div>: null}                    
+                </div>
                 <div className="col-sm-10 h-270 w-900">{this.props.power ? <GraphECG1 widthProp = "800" heightProp = "270"/> : null}</div>
             </div>
         );
@@ -353,7 +404,13 @@ class ECG2 extends React.Component {
     }
     render(){
         return(<div className="flex-sm-row d-flex">
-                <div className="text-success-emphasis fw-bold fs-4 d-flex flex-sm-column col-sm-2 text-center">ECG2</div>
+                <div className="text-success-emphasis fw-bold fs-4 d-flex flex-sm-column col-sm-2 text-center">
+                    <div className="fs-3">ECG2</div>
+                    <div className="h-100 text-success-emphasis fs-1">{this.props.power ?
+                        <div className="col h-50 fs-2">12 &nbsp; LEAD</div>: null}
+                        {this.props.power ? <i className="col h-50 fas fa-heartbeat fa-2x lead"></i>: null}
+                    </div>
+                </div>
                 <div className="col-sm-10 h-270 w-900">{this.props.power ? <GraphECG2 widthProp = "800" heightProp = "270"/> : null}</div>
             </div>
         );
@@ -378,7 +435,21 @@ class PLETH extends React.Component {
     }
     render(){
         return(<div className="flex-sm-row d-flex mw=100">
-                <div className="text-info-emphasis fw-bold fs-4 d-flex flex-sm-column col-sm-2 text-center">PLETH</div>
+                <div className="text-info-emphasis fw-bold d-flex flex-sm-column col-sm-2 text-center">
+                    <div className="fs-3">PLETH</div>
+                    <div className="h-100">
+                        <br></br>
+                       
+                        {this.props.power ? <div className="fs-4">97 &nbsp; SpO<sub>2</sub>%</div>: null}
+                        <br></br>
+                        {this.props.power ? <div className="fs-5 text-info">SpHb &nbsp; 9.5 &nbsp; g/dl</div>: null}                        
+                        <br></br>
+                        {this.props.power ? <div className="fs-5 text-warning">SpCO &nbsp; 8 &nbsp; %</div>: null}
+                        <br></br>
+                        {this.props.power ? <div className="fs-5 text-danger-emphasis">SpMet &nbsp; 1.2 &nbsp; %</div>: null}
+                        <br></br>
+                    </div>
+                </div>
                 <div className="col-sm-10 h-270 w-900">{this.props.power ? <GraphPLETH widthProp = "800" heightProp = "270"/> : null}</div>
             </div>
         );
@@ -403,7 +474,18 @@ class CAPNO extends React.Component {
     }
     render(){
         return(<div className="flex-sm-row d-flex mw-100">
-                <div className="text-warning-emphasis fw-bold fs-4 d-flex flex-sm-column col-sm-2 text-center">CAPNO</div>
+                <div className="text-warning-emphasis fw-bold fs-4 d-flex flex-sm-column col-sm-2 text-center">
+                    <div>CAPNO</div>
+                    <div className="h-100">
+                            <br></br>                            
+                            {this.props.power ? <div className="fs-2">32</div>: null}  
+                            {this.props.power ? <div className="fs-5">Resp. rpm</div>: null}      
+                            <br></br>                   
+                            {this.props.power ? <div className="fs-5">ETCO<sub>2</sub> &nbsp; mmHg</div>: null}                        
+                            {this.props.power ? <div className="fs-2">35</div>: null}
+                            <br></br>
+                    </div>
+                </div>
                 <div className="col-sm-10 h-270 w-900">{this.props.power ? <GraphCAPNO widthProp = "800" heightProp = "270"/> : null}</div>
             </div>
         );
@@ -558,8 +640,8 @@ class SMD extends React.Component{
                 </button>
             </div>
             <br></br>
-            <button onClick={this.changePowerState} className="power col-sm-12"
-                    style={{backgroundColor:this.state.buttonText.includes('START') ? 'green':this.state.buttonText.includes('STOP') ? 'red':'transparent', height:"50px"}}>
+            <button onClick={this.changePowerState} className="power col-sm-12 fs-1 btn btn-outline-dark"
+                    style={{backgroundColor:this.state.buttonText.includes('START') ? 'green':this.state.buttonText.includes('STOP') ? 'red':'transparent', height:"150px", }}>
                     {this.state.buttonText}
             </button>
             <br></br>
