@@ -115,6 +115,7 @@ class Footer extends React.Component{
     render(){
         return(
             <div className="header">
+                <i className="fas fa-wifi fs-3"></i>
                 <div className="bottom" id="time"></div>
                 <div className="bottom">
                     {this.state.user.name}
