@@ -120,8 +120,8 @@ class Footer extends React.Component{
                 <div className="bottom">
                     {this.state.user.name}
                 </div>
-                <button onClick={() => this.screenSetter("Details")} className="bottom">Check User Details</button>
-                <button onClick={() => this.screenSetter("Select")} className="bottom">Change User</button>
+                <button onClick={() => this.screenSetter("Details")} className="bottom">Check Patient Details</button>
+                <button onClick={() => this.screenSetter("Select")} className="bottom">Change Patient</button>
             </div>
         )
     }
@@ -184,7 +184,7 @@ class Details extends React.Component {
                 <div className="row align-items-center p-5" style={{marginTop: "10%"}}>
                     <div className="col-2"></div>
                     <div className = "col-8 text-center">
-                        <h1 className="user-details">User Details</h1>
+                        <h1 className="user-details">Patient Details</h1>
                         <h3>Name: {this.state.editLock ? this.state.user.name : <input type="text" value={this.state.user.name} onChange={this.handleNameChange} />}</h3>
                         <h3>Age: {this.state.editLock ? this.state.user.age : <input type="number" value={this.state.user.age} onChange={this.handleAgeChange} />}</h3>
                         <h3>Prescribed Drugs: {this.state.editLock ? this.state.user.drugs : <input type="text" value={this.state.user.drugs} onChange={this.handleDrugsChange} />}</h3>
@@ -236,7 +236,7 @@ class UserSelectScreen extends React.Component {
             <div style={{backgroundColor: "#212120"}} className="container-sm d-flex flex-column h-100 border border-info-subtle border-5">
                 <div className="row h-10 border-bottom border-light border-3"><Footer currentUser={this.user} setScreenProp={this.screenSetter}/></div>
                 <div className="create-user">
-                    <h1>Create a User</h1>
+                    <h1>Create Patient Profile</h1>
                     <form onSubmit={this.handleSubmit}>
                         <label>
                             Name: 
@@ -260,7 +260,7 @@ class UserSelectScreen extends React.Component {
                     </form>
                 </div>
                 <div className="change-user d-flex flex-column h-100">
-                    <h1>Change User</h1>
+                    <h1>Change Patient</h1>
                     <select value={this.user.name} onChange={this.handleUserChange} style={{padding: "10px", margin: "30px 0 0 0"}}>
                         {this.allUsers.map((user) => <option value={user.name}>{user.name}</option>)}
                     </select>
